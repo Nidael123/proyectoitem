@@ -174,6 +174,7 @@ public class agregarproductos extends AppCompatActivity {
             }
         });
     }
+    
     public void buscarproductos()
     {
         Log.d("agregarproducto","si entro1");
