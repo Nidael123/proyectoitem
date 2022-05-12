@@ -64,7 +64,8 @@ public class agregarproductos extends AppCompatActivity {
     productosGuardar help;
     EditText cantidadpro,observaciones;
     ListView listado;
-    Button guardar;
+    Button guardar,btnescojer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class agregarproductos extends AppCompatActivity {
         helpproductos = new productosGuardar();
         solicitante.setText(preferences.getString("usuario","Error"));
         areas.setText(preferences.getString("nombrearea","Error"));
+        btnescojer = (Button) findViewById(R.id.btnEscojer);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());//seteo la fecha actual
         Date date = new Date();
@@ -112,7 +114,12 @@ public class agregarproductos extends AppCompatActivity {
         buscarproductos();
 
         listado.setAdapter(adapter);
-
+        btnescojer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(agregarproductos.this,escojerProducto.class));
+            }
+        });
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,8 +153,6 @@ public class agregarproductos extends AppCompatActivity {
                 return false;
             }
         });
-
-
         mas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +176,7 @@ public class agregarproductos extends AppCompatActivity {
     }
     public void buscarproductos()
     {
-        Log.d("data","si entro0001");
+        Log.d("agregarproducto","si entro1");
         JsonObjectRequest requerimientos = new JsonObjectRequest(Request.Method.GET, urlproducto, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -205,7 +210,7 @@ public class agregarproductos extends AppCompatActivity {
     }
     public void buscarareas()
     {
-        Log.d("data","si entro");
+        Log.d("agregarproductos","si entroarea");
         JsonObjectRequest requerimiento = new JsonObjectRequest(Request.Method.GET, urlareas, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -220,7 +225,7 @@ public class agregarproductos extends AppCompatActivity {
                     }
 
 
-                    Log.d("data",jsonobject.getString("nombre"));
+                    Log.d("agregarproductos",jsonobject.getString("nombre"));
                 }catch (JSONException e)
                 {
                     Toast.makeText(agregarproductos.this,"error de sistema contactar con sistemas",Toast.LENGTH_LONG).show();

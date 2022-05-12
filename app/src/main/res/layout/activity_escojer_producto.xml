@@ -22,9 +22,16 @@
             android:ems="10"
             android:inputType="textPersonName"/>
 
-        <ListView
-            android:id="@+id/listaProductos"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/listaProductos"
+                android:layout_width="match_parent"
+                android:layout_height="448dp" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

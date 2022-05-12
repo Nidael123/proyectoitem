@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="152dp"
+                android:layout_height="120dp"
                 app:srcCompat="@drawable/logo" />
 
             <LinearLayout
@@ -134,6 +134,25 @@
                 android:paddingTop="10dp"
                 android:text="Añadir Productos"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnEscojer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="escojer" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
