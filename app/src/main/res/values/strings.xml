@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MaterialEmpaque</string>
+    <string name="title_activity_listadoaprocesar">listadoaprocesar</string>
+    <!--Direcciones web a las api dentro del servidor 192.168.0.219 -->
+
+    <string name="api_usurios">http://192.168.0.219//Puente/api_usuarios.php</string>
+    <string name="api_productos">http://192.168.0.219/Puente/api_productos.php</string>
+    <string name="api_areas">http://192.168.0.219/Puente/api_areas.php</string>
+    <string name="api_pedidos">http://192.168.0.219/Puente/api_pedidos.php</string>
+
+    <!--Strings BOTONES  -->
+    <string name="añadir">Agregar</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="guardar">Guardar</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
