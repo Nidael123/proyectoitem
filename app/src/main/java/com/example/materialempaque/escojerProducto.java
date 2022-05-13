@@ -2,6 +2,7 @@ package com.example.materialempaque;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class escojerProducto extends AppCompatActivity {
     JSONObject jsonObject;
@@ -32,8 +35,13 @@ public class escojerProducto extends AppCompatActivity {
     ListView listaproductos;
     String urlproducto;
     RequestQueue n_requeriminto;
-    ArrayList<String> productosLista;
+    ArrayList<String> productosLista,productosId;
+
     ArrayAdapter<String> adapter;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editorPreferences;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,8 @@ public class escojerProducto extends AppCompatActivity {
         listaproductos = (ListView) findViewById(R.id.listaProductos);
         urlproducto = getString(R.string.api_productos);
         productosLista = new ArrayList<String>();
+        productosId = new ArrayList<String>();
+
         buscar_productos();
         adapter = new ArrayAdapter<String>(escojerProducto.this, android.R.layout.simple_list_item_1,productosLista);
 
@@ -63,7 +73,8 @@ public class escojerProducto extends AppCompatActivity {
 
             }
         });
-
+        preferences = getSharedPreferences("datosapp",MODE_PRIVATE);
+        editorPreferences = preferences.edit();
         adapter.notifyDataSetChanged();
         listaproductos.setAdapter(adapter);
 
@@ -71,9 +82,17 @@ public class escojerProducto extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                editorPreferences.putString("producto",productosLista.get(i));
+                editorPreferences.putString("Idproducto",productosId.get(i));
+                editorPreferences.commit();
+                finish();
             }
         });
     }
+
+
+
+
     public void buscar_productos()
     {
         Log.d("escojerproducto","ingreso a buscar");
@@ -89,13 +108,9 @@ public class escojerProducto extends AppCompatActivity {
                         jsonObject= new JSONObject(jsonArray.get(i).toString());
 
                         productosLista.add(jsonObject.getString("nombre"));
-                        Log.d("escojerproductodearray",productosLista.get(i));
+                        productosId.add(jsonObject.getString("id"));
+                        Log.d("escojerproductodearray",productosLista.get(i)+productosId.get(i));
                     }
-                    for(int i = 0;i<productosLista.size();i++)
-                    {
-                        Log.d("escojerproductodefo",productosLista.get(i));
-                    }
-
                 }catch (JSONException e)
                 {
                     Toast.makeText(escojerProducto.this,"Error con la base consulte a sistemas",Toast.LENGTH_LONG).show();

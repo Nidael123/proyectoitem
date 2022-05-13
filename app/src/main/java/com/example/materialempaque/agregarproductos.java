@@ -44,27 +44,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class agregarproductos extends AppCompatActivity {
     ArrayAdapter adapter;
-    String urlproducto, urlareas, urlguardarproduc,fechadia;
+    String urlproducto, urlareas, urlguardarproduc,fechadia,idproducto;
     JSONObject jsonobject;
     RequestQueue n_requeriminto;
 
     TextView fecha, solicitante, fechaentrega,areas;
-    Spinner productos;
+    //Spinner productos;
     ImageButton mas;
     SharedPreferences preferences;
+    SharedPreferences.Editor editorPrefernces;
     int estado;
     adaptermasproductos masproductos;
-    ArrayList<String> listadoproductos;
+    ArrayList<String> listadoproductos,listadoproductosId;
     ArrayList<productosGuardar> productosaguardar,baseproductos;
     productosGuardar helpproductos;
     ArrayList<productosGuardar> nuevosproductos;
     productosGuardar help;
     EditText cantidadpro,observaciones;
+    TextView nuevo_producto;
     ListView listado;
     Button guardar,btnescojer;
+
 
 
     @Override
@@ -73,16 +77,18 @@ public class agregarproductos extends AppCompatActivity {
         setContentView(R.layout.activity_agregarproductos);
         estado = 0 ;//0 no guarda la cabecera 1 guardo la cabecera
         preferences = getSharedPreferences("datosapp",MODE_PRIVATE);
+        editorPrefernces = preferences.edit();
         fecha = findViewById(R.id.fechaingreso);
         solicitante = findViewById(R.id.solicitante);
         fechaentrega = findViewById(R.id.fechahoraentrega);
         areas = findViewById(R.id.textarea);
-        productos = findViewById(R.id.cargarproductos);
+        //productos = findViewById(R.id.cargarproductos);
         mas = (ImageButton) findViewById(R.id.mas);
         cantidadpro = (EditText) findViewById(R.id.cantidad);
         listado =  (ListView) findViewById(R.id.listviewproductos);
         guardar = (Button) findViewById(R.id.guardarpedido);
         observaciones = (EditText) findViewById(R.id.observacion);
+        nuevo_producto = (TextView) findViewById(R.id.textNuevoProducto);
         productosaguardar = new ArrayList<productosGuardar>();
         helpproductos = new productosGuardar();
         solicitante.setText(preferences.getString("usuario","Error"));
@@ -111,7 +117,6 @@ public class agregarproductos extends AppCompatActivity {
         help = new productosGuardar();
 
         buscarareas();
-        buscarproductos();
 
         listado.setAdapter(adapter);
         btnescojer.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +150,7 @@ public class agregarproductos extends AppCompatActivity {
                 dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener()
                 { public void onClick(DialogInterface dialogo1, int id)
                 { listadoproductos.remove(posicion);
+                    listadoproductosId.remove(posicion);
                     adapter.notifyDataSetChanged(); }
                 });
                 dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
@@ -155,18 +161,18 @@ public class agregarproductos extends AppCompatActivity {
         });
         mas.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                help.setProducto(productos.getSelectedItem().toString());
-                help.setId_producto(baseproductos.get(productos.getSelectedItemPosition()).getId_producto());
+            public void onClick(View view) {//guardo los datos
+                help.setProducto(nuevo_producto.getText().toString());
+                help.setId_producto(preferences.getString("Idproducto",null));
                 help.setCantidad(Integer.valueOf(cantidadpro.getText().toString()));
-                Log.d("spinner",productos.getSelectedItem().toString());
+
                 nuevosproductos.add(help);
 
                 masproductos = new adaptermasproductos(help);
 
                 masproductos.notifyDataSetChanged();
 
-                listadoproductos.add(productos.getSelectedItem().toString());
+                listadoproductos.add(preferences.getString("producto",null));
 
                 //list view
                 adapter.notifyDataSetChanged();
@@ -174,41 +180,16 @@ public class agregarproductos extends AppCompatActivity {
             }
         });
     }
-    
-    public void buscarproductos()
-    {
-        Log.d("agregarproducto","si entro1");
-        JsonObjectRequest requerimientos = new JsonObjectRequest(Request.Method.GET, urlproducto, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try{
 
-                    JSONArray jsonarray = response.getJSONArray("data");
-                    ArrayList array = new ArrayList<String>();
-                    for(int i = 0;i<jsonarray.length();i++)
-                    {
-                        jsonobject = new JSONObject(jsonarray.get(i).toString());
-                        array.add(jsonobject.getString("nombre"));
-                        //llenar el array guardar los datos de los productos hasta ver como cargarlos en el recicler
-                        helpproductos.setCantidad(0);
-                        helpproductos.setId_producto(jsonobject.getString("id"));
-                        helpproductos.setProducto(jsonobject.getString("nombre"));
-                        baseproductos.add(helpproductos);
-                    }
-                    productos.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line,array));
-                }catch (JSONException e){
-                    Toast.makeText(agregarproductos.this,"error de sistema contactar con sistemas",Toast.LENGTH_LONG).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(agregarproductos.this,"error con la obtencion de datos",Toast.LENGTH_LONG).show();
-            }
-        });
-        n_requeriminto = Volley.newRequestQueue(this);
-        n_requeriminto.add(requerimientos);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        nuevo_producto.setText(preferences.getString("producto",null));
+        idproducto = preferences.getString("Idproducto",null);
+        adapter.notifyDataSetChanged();
     }
+
+
     public void buscarareas()
     {
         Log.d("agregarproductos","si entroarea");

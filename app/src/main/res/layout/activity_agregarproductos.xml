@@ -68,7 +68,7 @@
                         android:layout_height="38dp"
                         android:paddingLeft="25dp"
                         android:paddingTop="10dp"
-                        android:text=" Fecha hora entrega"
+                        android:text=" Fecha / Hora entrega"
                         android:textStyle="bold" />
 
                     <TextView
@@ -144,14 +144,8 @@
                     android:id="@+id/btnEscojer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="escojer" />
+                    android:text="escoger" />
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
             </LinearLayout>
 
             <LinearLayout
@@ -164,15 +158,18 @@
                     android:layout_height="63dp"
                     android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/cargarproductos"
-                        android:layout_width="227dp"
+                    <TextView
+                        android:id="@+id/textNuevoProducto"
+                        android:layout_width="221dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:paddingLeft="25dp"
+                        android:paddingTop="10dp"
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/cantidad"
-                        android:layout_width="8dp"
+                        android:layout_width="96dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
