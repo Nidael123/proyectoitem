@@ -94,6 +94,7 @@ public class agregarproductos extends AppCompatActivity {
         solicitante.setText(preferences.getString("usuario","Error"));
         areas.setText(preferences.getString("nombrearea","Error"));
         btnescojer = (Button) findViewById(R.id.btnEscojer);
+        listadoproductosId = new ArrayList<String>();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());//seteo la fecha actual
         Date date = new Date();
@@ -132,7 +133,7 @@ public class agregarproductos extends AppCompatActivity {
                     Toast.makeText(agregarproductos.this,"Minimo un producto por pedido",Toast.LENGTH_LONG).show();
                 else
                 {
-                    guardarcabecera();
+                    //guardarcabecera();
                 }
 
 
@@ -173,8 +174,9 @@ public class agregarproductos extends AppCompatActivity {
                 masproductos.notifyDataSetChanged();
 
                 listadoproductos.add(preferences.getString("producto",null));
-
+                listadoproductosId.add(preferences.getString("Idproducto",null));
                 //list view
+
                 adapter.notifyDataSetChanged();
                 cantidadpro.setText("");
             }
@@ -186,9 +188,9 @@ public class agregarproductos extends AppCompatActivity {
         super.onResume();
         nuevo_producto.setText(preferences.getString("producto",null));
         idproducto = preferences.getString("Idproducto",null);
+        Log.d("Producto",preferences.getString("Idproducto",null).toString());
         adapter.notifyDataSetChanged();
     }
-
 
     public void buscarareas()
     {
@@ -283,7 +285,6 @@ public class agregarproductos extends AppCompatActivity {
                 parametros.put("v_observaciones", observaciones.getText().toString());
                 parametros.put("v_fecgaingresovalidar", fechadia);
                 parametros.put("v_estado", Integer.toString(estado));
-
                 return parametros;
             }
         };
