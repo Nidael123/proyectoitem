@@ -58,6 +58,7 @@ public class agregarproductos extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editorPrefernces;
     int estado;
+    ArrayList cantidades;
     adaptermasproductos masproductos;
     ArrayList<String> listadoproductos,listadoproductosId;
     ArrayList<productosGuardar> productosaguardar,baseproductos;
@@ -95,6 +96,7 @@ public class agregarproductos extends AppCompatActivity {
         areas.setText(preferences.getString("nombrearea","Error"));
         btnescojer = (Button) findViewById(R.id.btnEscojer);
         listadoproductosId = new ArrayList<String>();
+        cantidades = new ArrayList<Integer>();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());//seteo la fecha actual
         Date date = new Date();
@@ -133,7 +135,7 @@ public class agregarproductos extends AppCompatActivity {
                     Toast.makeText(agregarproductos.this,"Minimo un producto por pedido",Toast.LENGTH_LONG).show();
                 else
                 {
-                    //guardarcabecera();
+                    guardarcabecera();
                 }
 
 
@@ -163,22 +165,32 @@ public class agregarproductos extends AppCompatActivity {
         mas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//guardo los datos
-                help.setProducto(nuevo_producto.getText().toString());
-                help.setId_producto(preferences.getString("Idproducto",null));
-                help.setCantidad(Integer.valueOf(cantidadpro.getText().toString()));
 
-                nuevosproductos.add(help);
+                //validar cuan el edit text este vacio o es 0
+
+                help.setProducto(preferences.getString("producto",null));
+                help.setId_producto(preferences.getString("Idproducto",null));
+
+                help.setCantidad(Integer.valueOf(cantidadpro.getText().toString()));
+                Log.d("agragar producto",help.getId_producto()+","+help.getCantidad()            );
+
 
                 masproductos = new adaptermasproductos(help);
 
                 masproductos.notifyDataSetChanged();
 
-                listadoproductos.add(preferences.getString("producto",null));
-                listadoproductosId.add(preferences.getString("Idproducto",null));
+                listadoproductos.add(nuevo_producto.getText().toString());
+                listadoproductosId.add(idproducto);
+                cantidades.add(Integer.valueOf(cantidadpro.getText().toString()));
                 //list view
-
+                Log.d("Producto",help.getId_producto()+","+help.getCantidad(),null);
                 adapter.notifyDataSetChanged();
                 cantidadpro.setText("");
+                nuevosproductos.add(help);
+                for(int i=0;i < nuevosproductos.size();i++)
+                {
+                    Log.d("agragar producto",nuevosproductos.get(i).getId_producto()+","+nuevosproductos.get(i).getCantidad());
+                }
             }
         });
     }
@@ -260,10 +272,11 @@ public class agregarproductos extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 estado = 1;
-                Log.d("tamaño de lista",""+listadoproductos.size());
-                for (int i = 0; i<=listadoproductos.size()-1;i++)
+                Log.d("tamaño de lista",""+nuevosproductos.size());
+                for (int i = 0; i<listadoproductos.size();i++)
                 {
-                    guardarproductos(nuevosproductos.get(i).getId_producto(),nuevosproductos.get(i).getCantidad());
+                    guardarproductos(listadoproductosId.get(i),(Integer) cantidades.get(i));
+                    Log.d("agragar producto",listadoproductosId.get(i)+","+(Integer) cantidades.get(i));
                 }
                 Toast.makeText(agregarproductos.this,"guardado",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(agregarproductos.this,Listado.class));

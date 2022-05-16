@@ -109,7 +109,6 @@ public class escojerProducto extends AppCompatActivity {
 
                         productosLista.add(jsonObject.getString("nombre"));
                         productosId.add(jsonObject.getString("id"));
-                        Log.d("escojerproductodearray",productosLista.get(i)+productosId.get(i));
                     }
                 }catch (JSONException e)
                 {
