@@ -69,6 +69,7 @@ public class Listado extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Listado.this,agregarproductos.class));
+                finish();
             }
         });
         buscarpedidos();
@@ -99,7 +100,7 @@ public class Listado extends AppCompatActivity {
                     recicler.setAdapter(adapter);
                 }catch (JSONException error)
                 {
-                    Toast.makeText(Listado.this,"error de sistema contactar con sistemas",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Listado.this,"No hay pedidos",Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {

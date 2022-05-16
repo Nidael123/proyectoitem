@@ -1,5 +1,6 @@
 package com.example.materialempaque;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -98,6 +100,7 @@ public class agregarproductos extends AppCompatActivity {
         listadoproductosId = new ArrayList<String>();
         cantidades = new ArrayList<Integer>();
 
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());//seteo la fecha actual
         Date date = new Date();
         estado = 0;
@@ -166,30 +169,31 @@ public class agregarproductos extends AppCompatActivity {
             @Override
             public void onClick(View view) {//guardo los datos
 
-                //validar cuan el edit text este vacio o es 0
+                if(!cantidadpro.getText().toString().isEmpty()) {
+                    if(Integer.valueOf(cantidadpro.getText().toString()) > 0)
+                    {
+                        help.setProducto(preferences.getString("producto", null));
+                        help.setId_producto(preferences.getString("Idproducto", null));
+                        help.setCantidad(Integer.valueOf(cantidadpro.getText().toString()));
+                        Log.d("agragar producto", help.getId_producto() + "," + help.getCantidad());
+                        masproductos = new adaptermasproductos(help);
+                        masproductos.notifyDataSetChanged();
+                        listadoproductos.add(nuevo_producto.getText().toString() + "  CANTIDAD:" + Integer.valueOf(cantidadpro.getText().toString()));
+                        listadoproductosId.add(idproducto);
+                        cantidades.add(Integer.valueOf(cantidadpro.getText().toString()));
 
-                help.setProducto(preferences.getString("producto",null));
-                help.setId_producto(preferences.getString("Idproducto",null));
-
-                help.setCantidad(Integer.valueOf(cantidadpro.getText().toString()));
-                Log.d("agragar producto",help.getId_producto()+","+help.getCantidad()            );
-
-
-                masproductos = new adaptermasproductos(help);
-
-                masproductos.notifyDataSetChanged();
-
-                listadoproductos.add(nuevo_producto.getText().toString());
-                listadoproductosId.add(idproducto);
-                cantidades.add(Integer.valueOf(cantidadpro.getText().toString()));
-                //list view
-                Log.d("Producto",help.getId_producto()+","+help.getCantidad(),null);
-                adapter.notifyDataSetChanged();
-                cantidadpro.setText("");
-                nuevosproductos.add(help);
-                for(int i=0;i < nuevosproductos.size();i++)
+                        adapter.notifyDataSetChanged();
+                        cantidadpro.setText("");
+                        nuevosproductos.add(help);
+                    }
+                    else
+                    {
+                        Toast.makeText(agregarproductos.this,"No se admiten valores en cero" ,Toast.LENGTH_LONG).show();
+                    }
+                }
+                else
                 {
-                    Log.d("agragar producto",nuevosproductos.get(i).getId_producto()+","+nuevosproductos.get(i).getCantidad());
+                    Toast.makeText(agregarproductos.this,"La cantidad no puede estar en blanco",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -202,6 +206,17 @@ public class agregarproductos extends AppCompatActivity {
         idproducto = preferences.getString("Idproducto",null);
         Log.d("Producto",preferences.getString("Idproducto",null).toString());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            startActivity(new Intent(agregarproductos.this,Listado.class));
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
 
     public void buscarareas()
@@ -243,7 +258,7 @@ public class agregarproductos extends AppCompatActivity {
         StringRequest requerimiento = new StringRequest(Request.Method.POST, urlguardarproduc, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(agregarproductos.this,"guardadando productos",Toast.LENGTH_LONG).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
