@@ -204,7 +204,7 @@ public class agregarproductos extends AppCompatActivity {
         super.onResume();
         nuevo_producto.setText(preferences.getString("producto",null));
         idproducto = preferences.getString("Idproducto",null);
-        Log.d("Producto",preferences.getString("Idproducto",null).toString());
+
         adapter.notifyDataSetChanged();
     }
 
