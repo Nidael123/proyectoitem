@@ -57,6 +57,7 @@ public class escojerProducto extends AppCompatActivity {
         buscar_productos();
         adapter = new ArrayAdapter<String>(escojerProducto.this, android.R.layout.simple_list_item_1,productosLista);
 
+
         buscador.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -75,34 +76,35 @@ public class escojerProducto extends AppCompatActivity {
         });
         preferences = getSharedPreferences("datosapp",MODE_PRIVATE);
         editorPreferences = preferences.edit();
-        adapter.notifyDataSetChanged();
-        listaproductos.setAdapter(adapter);
+        //adapter.notifyDataSetChanged();
+        //listaproductos.setAdapter(adapter);
 
         listaproductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                editorPreferences.putString("producto",productosLista.get(i));
-                editorPreferences.putString("Idproducto",productosId.get(i));
-                editorPreferences.commit();
+                for(int d=0;d<productosLista.size();d++) {
+                    if (productosLista.get(d) == listaproductos.getItemAtPosition(i).toString())
+                    {
+                        editorPreferences.putString("producto",productosLista.get(d));
+                        editorPreferences.putString("Idproducto",productosId.get(d));
+                        editorPreferences.commit();
+                        Log.d("escoje rproducto for ",productosId.get(d)+""+productosLista.get(d));
+                    }
+                }
                 finish();
             }
         });
     }
 
 
-
-
     public void buscar_productos()
     {
-        Log.d("escojerproducto","ingreso a buscar");
         JsonObjectRequest requerimiento = new JsonObjectRequest(Request.Method.GET, urlproducto, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jsonArray = response.getJSONArray("data");
-                    //ArrayList array = new ArrayList<String>();
-                    Log.d("escojerproductodearray",""+jsonArray.length());
                     for (int i =0;i<jsonArray.length();i++)
                     {
                         jsonObject= new JSONObject(jsonArray.get(i).toString());
@@ -110,6 +112,8 @@ public class escojerProducto extends AppCompatActivity {
                         productosLista.add(jsonObject.getString("nombre"));
                         productosId.add(jsonObject.getString("id"));
                     }
+                    adapter.notifyDataSetChanged();
+                    listaproductos.setAdapter(adapter);
                 }catch (JSONException e)
                 {
                     Toast.makeText(escojerProducto.this,"Error con la base consulte a sistemas",Toast.LENGTH_LONG).show();
@@ -123,6 +127,5 @@ public class escojerProducto extends AppCompatActivity {
         });
         n_requeriminto = Volley.newRequestQueue(this);
         n_requeriminto.add(requerimiento);
-
     }
 }

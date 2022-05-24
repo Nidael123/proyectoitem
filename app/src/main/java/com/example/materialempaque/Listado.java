@@ -77,8 +77,6 @@ public class Listado extends AppCompatActivity {
 
     public void buscarpedidos()
     {
-
-
         JsonObjectRequest requerimintos = new JsonObjectRequest(Request.Method.GET, urlpedidos, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
