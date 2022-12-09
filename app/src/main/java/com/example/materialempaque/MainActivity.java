@@ -2,6 +2,7 @@ package com.example.materialempaque;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.DownloadManager;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         preferences = getSharedPreferences("datosapp",MODE_PRIVATE);
         preferenceseditor = preferences.edit();
         urlusurio = getString(R.string.api_usurios);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         empezar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,15 +75,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jsonarray  = response.getJSONArray("data");
-                    jsonObject = new JSONObject(jsonarray.get(0).toString());
-                    preferenceseditor.putString("usuario",jsonObject.getString("nombre"));
-                    preferenceseditor.putString("id_usuario",jsonObject.getString("id"));
-                    preferenceseditor.putString("id_area",jsonObject.getString("id_area"));
-                    preferenceseditor.putString("nombrearea",jsonObject.getString("nombrearea"));
-                    preferenceseditor.commit();
-                    startActivity(new Intent(MainActivity.this,Listado.class));
+                    JSONArray jsonArray = response.getJSONArray("datos");
+                    jsonObject = new JSONObject(jsonArray.get(0).toString());
 
+                    if(jsonObject.getInt("id") == 0)
+                    {
+                        Toast.makeText(MainActivity.this,"Error en usuario o contraseña",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+
+                        Toast.makeText(MainActivity.this, "Ingreso con Exito", Toast.LENGTH_LONG);
+                    }
                 }catch (JSONException e) {
                     Toast.makeText(MainActivity.this,"error de sistema contactar con sistemas",Toast.LENGTH_LONG).show();
 

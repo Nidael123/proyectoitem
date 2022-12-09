@@ -36,7 +36,7 @@
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_width="112dp"
+                    android:layout_width="127dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="USUARIO  :" />
@@ -65,21 +65,21 @@
 
                 <TextView
                     android:id="@+id/textView7"
-                    android:layout_width="113dp"
+                    android:layout_width="91dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="CONTRASEÑA  :" />
 
                 <EditText
                     android:id="@+id/contrasena"
-                    android:layout_width="wrap_content"
+                    android:layout_width="238dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="textPassword" />
 
                 <Space
-                    android:layout_width="26dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
 

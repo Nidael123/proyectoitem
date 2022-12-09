@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">MaterialEmpaque</string>
     <string name="title_activity_listadoaprocesar">listadoaprocesar</string>
-    <!--Direcciones web a las api dentro del servidor 192.168.0.219 -->
 
+    <!--Direcciones web a las api dentro del servidor 192.168.0.219 -->
     <string name="api_usurios">http://192.168.0.219//Puente/api_usuarios.php</string>
     <string name="api_productos">http://192.168.0.219/Puente/api_productos.php</string>
     <string name="api_areas">http://192.168.0.219/Puente/api_areas.php</string>
